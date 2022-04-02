@@ -5,11 +5,13 @@ package hotel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+
+import java.io.*;
+import java.nio.file.Path;
 
 import HotelV3.*;
+
+import static java.nio.file.Files.exists;
 
 public class secondFrame extends JFrame {
     private JPanel Reservas;
@@ -46,7 +48,7 @@ public class secondFrame extends JFrame {
     private JLabel lbSalida;
     private JLabel lbInfo;
     private JLabel lbInfo2;
-    private JButton gestionarButton;
+    private JButton btGestionarR;
     private JTextField tfFechaAlta;
     private JTextField tfFechaBaja;
     private JLabel lbFechaAlta;
@@ -56,11 +58,19 @@ public class secondFrame extends JFrame {
     private int numEstandar;
     private int numBalcon;
     private int numSuite;
+    protected static FileOutputStream fos = null;
+    protected static ObjectOutputStream salida = null;
 
-
+    /////////////////////*CONSTRUCTOR*////////////////////////////////////////////////////////////////////////////
     public secondFrame(){
         setContentPane(Reservas);
-        H = new Registro();
+        try {
+            H = Leer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         setTitle("Reservas");
         setSize(900,400);
         setVisible(true);
@@ -71,6 +81,8 @@ public class secondFrame extends JFrame {
                 dispose();
             }
         });
+
+        /////////////////////*GESTIONAR EL BOTÓN "LIMPIAR"*////////////////////////////////////////////////////
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,7 +106,7 @@ public class secondFrame extends JFrame {
             }
         });
 
-
+        /////////////////////*GESTIONAR EL BOTÓN "CONFIRMAR"*////////////////////////////////////////////////////
         btnConfirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,6 +159,7 @@ public class secondFrame extends JFrame {
                     }
                 }
                 JOptionPane.showMessageDialog(null,"Todas las reservas han sido realizadas con exito.");
+                //////////////////////*RESETEAR LOS TEXT_FIELD*///////////////////////////////////////////////////////////
                 tfNombre.setText("");
                 tfApellidos.setText("");
                 tfDireccion.setText("");
@@ -167,6 +180,8 @@ public class secondFrame extends JFrame {
 
             }
         });
+
+        ////////////////*CALCULAR PRECIO*///////////////////////////////////////////////////////////////////////////
         btnCalcular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -194,6 +209,8 @@ public class secondFrame extends JFrame {
 
             }
         });
+
+        /////////////////////*GESTIONAR EL CHECK_BOX "ESTANDAR"*////////////////////////////////////////////////////
         cbEstandar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -203,16 +220,19 @@ public class secondFrame extends JFrame {
                 }
             }
         });
+
+        /////////////////////*GESTIONAR EL CHECK_BOX "BALCÓN"*////////////////////////////////////////////////////
         cbBalcon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(cbSuite.isSelected()){
+                if(cbBalcon.isSelected()){
                     JOptionPane.showMessageDialog(null,"Has pulsado 'balcón'.");
                     tfBalcon.setText("1");
                 }
             }
         });
 
+        /////////////////////*GESTIONAR EL CHECK_BOX "SUITE"*////////////////////////////////////////////////////
         cbSuite.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -222,6 +242,8 @@ public class secondFrame extends JFrame {
                 }
             }
         });
+
+        /////////////////////*GESTIONAR EL COMBO_BOX*////////////////////////////////////////////////////
         comboBoxRegimen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -236,7 +258,8 @@ public class secondFrame extends JFrame {
                 }
             }
         });
-        gestionarButton.addActionListener(new ActionListener() {
+        /////////////////////*GESTIONAR EL BOTÓN "GESTIONARR"*////////////////////////////////////////////////////
+        btGestionarR.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean mens=true;
@@ -262,7 +285,8 @@ public class secondFrame extends JFrame {
         secondFrame second = new secondFrame();
     }
 
-    private static void Serializar(Registro r) throws IOException {
+    /////////////////////*SERIALIZACIÓN*////////////////////////////////////////////////////
+    public static void Serializar(Registro r) throws IOException{
         FileOutputStream fos = new FileOutputStream("reg.dat");
         ObjectOutputStream salida = new ObjectOutputStream(fos);
         salida.writeObject(r);
@@ -270,5 +294,18 @@ public class secondFrame extends JFrame {
         salida.close();
     }
 
-
+    public static Registro Leer() throws IOException, ClassNotFoundException {
+        if ((exists(Path.of("reg.dat")) == true)){
+            FileInputStream fis = new FileInputStream("reg.dat");
+            ObjectInputStream entrada = new ObjectInputStream(fis);
+            Registro salida = (Registro) entrada.readObject();
+            fis.close();
+            entrada.close();
+            return salida;
+        }
+        else{
+            return new Registro();
+        }
+    }
 }
+

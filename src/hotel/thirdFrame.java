@@ -5,9 +5,9 @@ import HotelV3.Registro;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 public class thirdFrame extends JFrame{
     private JPanel thirdPanel;
@@ -22,6 +22,7 @@ public class thirdFrame extends JFrame{
     private JTextField tfTipo;
     protected Registro H;
 
+    /////////////////////*CONSTRUCTOR*////////////////////////////////////////////////////
     thirdFrame(){
         H = secondFrame.H;
         setContentPane(thirdPanel);
@@ -30,6 +31,7 @@ public class thirdFrame extends JFrame{
         this.mostrarMapa();
         setVisible(true);
 
+        /////////////////////*GESTIONAR EL BOTÓN "CANCELAR"*////////////////////////////////////////////////////
         btCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,6 +40,7 @@ public class thirdFrame extends JFrame{
             }
         });
 
+        /////////////////////*GESTIONAR EL BOTÓN "ANULAR"*////////////////////////////////////////////////////
         btAnular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,12 +49,14 @@ public class thirdFrame extends JFrame{
                 int num = Integer.parseInt(tfNum.getText());
                 H.anulaReserva(DNI,tipo,num);
                 try {
-                    Serializar(H);
+                    secondFrame.Serializar(H);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
                 mostrarMapa();
                 JOptionPane.showMessageDialog(null,"El proceso de anulación ha finalizado.");
+                tfNum.setText("");
+                tfTipo.setText("");
             }
         });
 
@@ -59,6 +64,7 @@ public class thirdFrame extends JFrame{
 
     public static void main(String[] args) {thirdFrame A = new thirdFrame();}
 
+    /////////////////////*MUESTRA EL MAPA DEL HOTEL EN EL TEXT_AREA MAPAHOTEL*//////////////////////////////////////////
     public void mostrarMapa(){
         String mostrar = new String();
         for (int i = 0; i < 8; ++i) {
@@ -75,12 +81,5 @@ public class thirdFrame extends JFrame{
         taMapaHotel.setText(mostrar);
     }
 
-    private static void Serializar(Registro r) throws IOException {
-        FileOutputStream fos = new FileOutputStream("reg.dat");
-        ObjectOutputStream salida = new ObjectOutputStream(fos);
-        salida.writeObject(r);
-        fos.close();
-        salida.close();
-    }
 
 }

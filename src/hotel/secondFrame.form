@@ -393,13 +393,13 @@
           <text value="..."/>
         </properties>
       </component>
-      <component id="c636f" class="javax.swing.JButton" binding="gestionarButton" default-binding="true">
+      <component id="c636f" class="javax.swing.JButton" binding="btGestionarR">
         <constraints>
           <grid row="14" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <text value="Gestionar"/>
+          <text value="Gestionar reservas"/>
         </properties>
       </component>
       <component id="de301" class="javax.swing.JTextField" binding="tfFechaAlta">
