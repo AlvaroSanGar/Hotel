@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.file.Path;
 
-import HotelV3.*;
+import PaqC07.*;
 
 import static java.nio.file.Files.exists;
 
@@ -64,6 +64,8 @@ public class secondFrame extends JFrame {
     /////////////////////*CONSTRUCTOR*////////////////////////////////////////////////////////////////////////////
     public secondFrame(){
         setContentPane(Reservas);
+        setTitle("Reservas");
+        setSize(900,400);
         try {
             H = Leer();
         } catch (IOException e) {
@@ -71,8 +73,6 @@ public class secondFrame extends JFrame {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        setTitle("Reservas");
-        setSize(900,400);
         setVisible(true);
         btnCancelar.addActionListener(new ActionListener() {
             @Override
@@ -263,8 +263,8 @@ public class secondFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean mens=true;
-                for (int i=0;i<8;i++){
-                    for (int j=0;j<6;j++){
+                for (int i=0;i<H.numPisos;i++){
+                    for (int j=0;j<H.numHab;j++){
                         if(H.habitaciones[i][j]!=null){
                             mens = false;
                             break;
@@ -294,6 +294,8 @@ public class secondFrame extends JFrame {
         salida.close();
     }
 
+
+
     public static Registro Leer() throws IOException, ClassNotFoundException {
         if ((exists(Path.of("reg.dat")) == true)){
             FileInputStream fis = new FileInputStream("reg.dat");
@@ -307,5 +309,7 @@ public class secondFrame extends JFrame {
             return new Registro();
         }
     }
+
+
 }
 

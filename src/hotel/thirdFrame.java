@@ -1,13 +1,11 @@
 package hotel;
 
-import HotelV3.Registro;
+import PaqC07.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class thirdFrame extends JFrame{
     private JPanel thirdPanel;
@@ -67,9 +65,9 @@ public class thirdFrame extends JFrame{
     /////////////////////*MUESTRA EL MAPA DEL HOTEL EN EL TEXT_AREA MAPAHOTEL*//////////////////////////////////////////
     public void mostrarMapa(){
         String mostrar = new String();
-        for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 6; ++j) {
-                if (H.habitaciones[i][j] == null) {
+        for (int i = 0; i < H.numPisos; ++i) {
+            for (int j = 0; j < H.numHab; ++j) {
+                if (H.habitaciones[i][j] == null){
                     mostrar = mostrar + " L ";
                 } else {
                     mostrar = mostrar + " R ";
